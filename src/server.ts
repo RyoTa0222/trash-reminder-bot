@@ -43,42 +43,42 @@ const eventHandler = (event: WebhookEvent) => {
     return Promise.resolve(null);
   }
   // 月曜日の場合
-  if ("月曜".indexOf(event.message.text) !== -1) {
+  if (event.message.text.indexOf("月曜") !== -1) {
     return client.replyMessage(event.replyToken, {
       type: "text",
       text: TRASH_LIST["月曜日"],
     });
   }
   // 火曜日の場合
-  if ("火曜".indexOf(event.message.text) !== -1) {
+  if (event.message.text.indexOf("火曜") !== -1) {
     return client.replyMessage(event.replyToken, {
       type: "text",
       text: TRASH_LIST["火曜日"],
     });
   }
   // 水曜日の場合
-  if ("水曜".indexOf(event.message.text) !== -1) {
+  if (event.message.text.indexOf("水曜") !== -1) {
     return client.replyMessage(event.replyToken, {
       type: "text",
       text: TRASH_LIST["水曜日"],
     });
   }
   // 木曜日の場合
-  if ("木曜".indexOf(event.message.text) !== -1) {
+  if (event.message.text.indexOf("木曜") !== -1) {
     return client.replyMessage(event.replyToken, {
       type: "text",
       text: TRASH_LIST["木曜日"],
     });
   }
   // 金曜日の場合
-  if ("金曜".indexOf(event.message.text) !== -1) {
+  if (event.message.text.indexOf("金曜") !== -1) {
     return client.replyMessage(event.replyToken, {
       type: "text",
       text: TRASH_LIST["金曜日"],
     });
   }
   // 今日
-  if ("今日".indexOf(event.message.text) !== -1) {
+  if (event.message.text.indexOf("今日") !== -1) {
     const todayOfWeek = DateTime.local().setZone("Asia/Tokyo").toFormat("EEEE");
     return client.replyMessage(event.replyToken, {
       type: "text",
@@ -86,7 +86,7 @@ const eventHandler = (event: WebhookEvent) => {
     });
   }
   // 明日
-  if ("明日".indexOf(event.message.text) !== -1) {
+  if (event.message.text.indexOf("明日") !== -1) {
     const todayOfWeek = DateTime.local()
       .plus({ day: 1 })
       .setZone("Asia/Tokyo")
