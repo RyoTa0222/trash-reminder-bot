@@ -11,7 +11,6 @@
 const express = require("express");
 const line = require("@line/bot-sdk");
 const serverless = require("serverless-http");
-import { DEFAULT_MESSAGE } from "./consts/config";
 
 const app = express();
 
@@ -42,7 +41,10 @@ const client = new line.Client(lineConfig);
 
 const eventHandler = (event) => {
   if (event.type !== "message" || event.message.type !== "text") {
-    return client.replyMessage(event.replyToken, DEFAULT_MESSAGE);
+    return client.replyMessage(event.replyToken, {
+      type: "text",
+      text: "すみません。よくわかりませんでした。",
+    };);
   }
   return client.replyMessage(event.replyToken, {
     type: "text",
