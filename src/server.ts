@@ -23,6 +23,16 @@ const lineConfig = {
 const router = express.Router();
 router.get("/", (req, res) => res.send("Hello LINE BOT!(GET)"));
 router.post("/webhook", line.middleware(lineConfig), (req, res) => {
+  console.log(req.body.events);
+  //ここのif分はdeveloper consoleの"接続確認"用なので削除して問題ないです。
+  if (
+    req.body.events[0].replyToken === "00000000000000000000000000000000" &&
+    req.body.events[1].replyToken === "ffffffffffffffffffffffffffffffff"
+  ) {
+    res.send("Hello LINE BOT!(POST)");
+    console.log("疎通確認用");
+    return;
+  }
   Promise.all(req.body.events.map(eventHandler)).then((result) =>
     res.json(result)
   );
