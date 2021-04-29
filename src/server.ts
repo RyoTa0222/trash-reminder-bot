@@ -44,7 +44,7 @@ const eventHandler = (event) => {
     return client.replyMessage(event.replyToken, {
       type: "text",
       text: "すみません。よくわかりませんでした。",
-    };);
+    });
   }
   return client.replyMessage(event.replyToken, {
     type: "text",
