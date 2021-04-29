@@ -1,50 +1,43 @@
-// import express from "express";
-// import line, {
-//   MessageEvent,
-//   WebhookEvent,
-//   ClientConfig,
-//   MiddlewareConfig,
-//   TextEventMessage,
-//   Config,
-// } from "@line/bot-sdk";
-// import serverless from "serverless-http";
-const express = require("express");
-const line = require("@line/bot-sdk");
-const serverless = require("serverless-http");
+import express from "express";
+import {
+  Config,
+  MiddlewareConfig,
+  ClientConfig,
+  WebhookEvent,
+  Client,
+  middleware,
+} from "@line/bot-sdk";
+import serverless from "serverless-http";
 
 const app = express();
 
-const lineConfig = {
+const lineConfig: Config = {
   channelSecret: process.env.CHANNEL_SECRET,
   channelAccessToken: process.env.ACCESS_TOKEN,
 };
 
 const router = express.Router();
 router.get("/", (req, res) => res.send("Hello LINE BOT!(GET)"));
-router.post("/webhook", line.middleware(lineConfig), (req, res) => {
-  console.log(JSON.stringify(req.body));
-  //ここのif分はdeveloper consoleの"接続確認"用なので削除して問題ないです。
-  if (
-    req.body.events[0].replyToken === "00000000000000000000000000000000" &&
-    req.body.events[1].replyToken === "ffffffffffffffffffffffffffffffff"
-  ) {
-    res.send("Hello LINE BOT!(POST)");
-    console.log("疎通確認用");
-    return;
+router.post(
+  "/webhook",
+  middleware(lineConfig as MiddlewareConfig),
+  (req, res) => {
+    console.log(JSON.stringify(req.body));
+    if (req.body.events.length === 0) {
+      res.send("test");
+      return;
+    }
+    Promise.all(req.body.events.map(eventHandler)).then((result) =>
+      res.json(result)
+    );
   }
-  Promise.all(req.body.events.map(eventHandler)).then((result) =>
-    res.json(result)
-  );
-});
+);
 
-const client = new line.Client(lineConfig);
+const client = new Client(lineConfig as ClientConfig);
 
-const eventHandler = (event) => {
+const eventHandler = (event: WebhookEvent) => {
   if (event.type !== "message" || event.message.type !== "text") {
-    return client.replyMessage(event.replyToken, {
-      type: "text",
-      text: "すみません。よくわかりませんでした。",
-    });
+    return Promise.resolve(null);
   }
   return client.replyMessage(event.replyToken, {
     type: "text",
@@ -53,5 +46,6 @@ const eventHandler = (event) => {
 };
 
 app.use("/.netlify/functions/server", router);
-module.exports = app;
-module.exports.handler = serverless(app);
+
+// export default app;
+export const handler = serverless(app);
