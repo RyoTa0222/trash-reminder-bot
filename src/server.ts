@@ -17,6 +17,8 @@ const lineConfig: Config = {
   channelAccessToken: process.env.CHANNEL_SECRET,
 };
 
+console.log(process.env.ACCESS_TOKEN);
+
 const router = express.Router();
 router.post(
   "/webhook",
