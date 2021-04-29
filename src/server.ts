@@ -17,9 +17,10 @@ const lineConfig: Config = {
   channelAccessToken: process.env.CHANNEL_SECRET,
 };
 
-console.log(process.env.ACCESS_TOKEN);
+console.log(`config: ${JSON.stringify(lineConfig)}`);
 
 const router = express.Router();
+router.get("/", (req, res) => res.send("Hello LINE BOT!(GET)"));
 router.post(
   "/webhook",
   line.middleware(lineConfig as MiddlewareConfig),
