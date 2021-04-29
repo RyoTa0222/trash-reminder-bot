@@ -13,11 +13,9 @@ import { DEFAULT_MESSAGE } from "./consts/config";
 const app = express();
 
 const lineConfig: Config = {
-  channelSecret: process.env.ACCESS_TOKEN,
-  channelAccessToken: process.env.CHANNEL_SECRET,
+  channelSecret: process.env.CHANNEL_SECRET,
+  channelAccessToken: process.env.ACCESS_TOKEN,
 };
-
-console.log(`config: ${JSON.stringify(lineConfig)}`);
 
 const router = express.Router();
 router.get("/", (req, res) => res.send("Hello LINE BOT!(GET)"));
