@@ -27,7 +27,7 @@ const TRASH_LIST: Record<DayOfWeek, string> = {
   火曜日: "燃えないゴミ・カセットボンベ・スプレー缶",
   水曜日: "缶・びん・ペットボトル",
   木曜日: "燃えるゴミ",
-  金曜日: "容器包装プラスチックと毎月第２・第４金曜日は紙ゴミ",
+  金曜日: "容器包装プラスチックと \n 毎月第2・第4金曜日は紙ゴミ",
 };
 
 export { DEFAULT_MESSAGE, TRASH_LIST, CHART_MESSAGE };
