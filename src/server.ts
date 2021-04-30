@@ -87,7 +87,7 @@ const eventHandler = (event: WebhookEvent) => {
       return client.replyMessage(event.replyToken, {
         type: "text",
         text:
-          "ゴミの収集は平日のみです。\n https://www.city.kobe.lg.jp/a04164/kurashi/recycle/gomi/dashikata/calendar/higashinada/mikagetsukamachi.html",
+          "ゴミの収集は平日のみです。\nhttps://www.city.kobe.lg.jp/a04164/kurashi/recycle/gomi/dashikata/calendar/higashinada/mikagetsukamachi.html",
       });
     }
     return client.replyMessage(event.replyToken, {
@@ -105,7 +105,7 @@ const eventHandler = (event: WebhookEvent) => {
       return client.replyMessage(event.replyToken, {
         type: "text",
         text:
-          "ゴミの収集は平日のみです。\n https://www.city.kobe.lg.jp/a04164/kurashi/recycle/gomi/dashikata/calendar/higashinada/mikagetsukamachi.html",
+          "ゴミの収集は平日のみです。\nhttps://www.city.kobe.lg.jp/a04164/kurashi/recycle/gomi/dashikata/calendar/higashinada/mikagetsukamachi.html",
       });
     }
     return client.replyMessage(event.replyToken, {
@@ -123,9 +123,9 @@ const eventHandler = (event: WebhookEvent) => {
     event.message.text.includes("ダンボール");
   const date = new DateJP()
   const nextTrashDay = date.getMatchedDateAfterToday()
-  let text = "毎月第2・第4金曜日 \n 午前6時から9時の間に出してください"
+  let text = "毎月第2・第4金曜日\n午前6時から9時の間に出してください"
   if (nextTrashDay) {
-    text += `\n 次回のゴミ捨ての日は${nextTrashDay.toFormat('m月d日')}です。`
+    text += `\n 次回のゴミ捨ての日は${nextTrashDay.toFormat('M月d日')}です。`
   } else {
     text += `\n 今月のゴミ捨ての日はありません。来月お試しください`
   }
