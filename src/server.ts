@@ -8,7 +8,7 @@ import {
   middleware,
 } from "@line/bot-sdk";
 import serverless from "serverless-http";
-import { DEFAULT_MESSAGE, TRASH_LIST } from "./consts/config";
+import { DEFAULT_MESSAGE, TRASH_LIST, CHART_MESSAGE } from "./consts/config";
 import { DateTime } from "luxon";
 import { DayOfWeek } from "./types/interface";
 import DateJP from "./utils/date" 
@@ -83,17 +83,6 @@ const eventHandler = (event: WebhookEvent) => {
   // 今日
   if (event.message.text.indexOf("今日") !== -1) {
     const todayOfWeek = DateTime.local().setZone("Asia/Tokyo").toFormat("EEEE");
-    return client.replyMessage(event.replyToken, {
-      type: "text",
-      text: TRASH_LIST[todayOfWeek as DayOfWeek],
-    });
-  }
-  // 明日
-  if (event.message.text.indexOf("明日") !== -1) {
-    const todayOfWeek = DateTime.local()
-      .plus({ day: 1 })
-      .setZone("Asia/Tokyo")
-      .toFormat("EEEE");
     if (["土曜日", "日曜日"].includes(todayOfWeek)) {
       return client.replyMessage(event.replyToken, {
         type: "text",
@@ -106,12 +95,32 @@ const eventHandler = (event: WebhookEvent) => {
       text: TRASH_LIST[todayOfWeek as DayOfWeek],
     });
   }
+  // 明日
+  if (event.message.text.indexOf("明日") !== -1) {
+    const tomorrowOfWeek = DateTime.local()
+      .plus({ day: 1 })
+      .setZone("Asia/Tokyo")
+      .toFormat("EEEE");
+    if (["土曜日", "日曜日"].includes(tomorrowOfWeek)) {
+      return client.replyMessage(event.replyToken, {
+        type: "text",
+        text:
+          "ゴミの収集は平日のみです。\n https://www.city.kobe.lg.jp/a04164/kurashi/recycle/gomi/dashikata/calendar/higashinada/mikagetsukamachi.html",
+      });
+    }
+    return client.replyMessage(event.replyToken, {
+      type: "text",
+      text: TRASH_LIST[tomorrowOfWeek as DayOfWeek],
+    });
+  }
   // 紙ごみ
   const result =
     event.message.text.includes("紙ごみ") ||
+    event.message.text.includes("紙ゴミ") ||
     event.message.text.includes("新聞") ||
     event.message.text.includes("雑誌") ||
-    event.message.text.includes("段ボール");
+    event.message.text.includes("段ボール") ||
+    event.message.text.includes("ダンボール");
   const date = new DateJP()
   const nextTrashDay = date.getMatchedDateAfterToday()
   let text = "毎月第２・第４金曜日 \n 午前６時から９時の間に出してください"
@@ -125,6 +134,10 @@ const eventHandler = (event: WebhookEvent) => {
       type: "text",
       text,
     });
+  }
+  // 早見表
+  if (event.message.text.indexOf("早見表") !== -1) {
+    return client.replyMessage(event.replyToken, CHART_MESSAGE);
   }
   return client.replyMessage(event.replyToken, DEFAULT_MESSAGE);
 };
