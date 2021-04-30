@@ -123,11 +123,11 @@ const eventHandler = (event: WebhookEvent) => {
     event.message.text.includes("ダンボール");
   const date = new DateJP()
   const nextTrashDay = date.getMatchedDateAfterToday()
-  let text = "毎月第2・第4金曜日\n午前6時から9時の間に出してください"
+  let text = "毎月第2・第4金曜日、午前6時から9時の間に出してください。"
   if (nextTrashDay) {
-    text += `\n 次回のゴミ捨ての日は${nextTrashDay.toFormat('M月d日')}です。`
+    text += `\n次回のゴミ捨ての日は${nextTrashDay.toFormat('M月d日')}です。`
   } else {
-    text += `\n 今月のゴミ捨ての日はありません。来月お試しください`
+    text += `\n今月のゴミ捨ての日はありません。来月お試しください。`
   }
   if (result) {
     return client.replyMessage(event.replyToken, {
